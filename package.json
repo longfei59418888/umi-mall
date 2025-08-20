@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "author": "wangxiaolong <wangxiaolong@unipus.cn>",
+  "scripts": {
+    "serve": "umi-serve",
+    "start": "cross-env UMI_ENV=development max dev",
+    "start:prod": "cross-env UMI_ENV=production max dev",
+    "build": "max build",
+    "build:prod": "cross-env UMI_ENV=production max build",
+    "format": "prettier --cache --write .",
+    "prepare": "husky",
+    "openapi2ts": "openapi2ts",
+    "postinstall": "max setup",
+    "setup": "max setup"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.0.1",
+    "@ant-design/pro-components": "^2.4.4",
+    "@umijs/max": "^4.4.12",
+    "@umijs/types": "^3.5.43",
+    "ahooks": "^3.9.0",
+    "antd": "^5.4.0",
+    "zustand": "^5.0.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "@umijs/openapi": "^1.13.15",
+    "husky": "^9",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.7",
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "prettier-plugin-packagejson": "^2.4.3",
+    "tailwindcss": "^3",
+    "typescript": "^5.0.3"
+  }
+}

@@ -1,0 +1,2 @@
+export const LOGIN_TOKEN = 'LOGIN_TOKEN';
+export const LOGIN_USERINFO = 'LOGIN_USERINFO';
