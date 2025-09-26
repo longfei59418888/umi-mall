@@ -11,8 +11,10 @@ import * as shangpinfenleiguanli from './shangpinfenleiguanli';
 import * as shangpinguanli from './shangpinguanli';
 import * as shangpinshuxingguanli from './shangpinshuxingguanli';
 import * as shangpinshuxingleixingguanli from './shangpinshuxingleixingguanli';
+import * as tongyongshangchuan from './tongyongshangchuan';
 import * as zhanghuguanli from './zhanghuguanli';
 export default {
+  tongyongshangchuan,
   renzhengguanli,
   caidanguanli,
   zhanghuguanli,

@@ -1,15 +1,15 @@
-import { getProductList, createProduct, updateProduct, deleteProduct, togglePublishStatus } from '@/services/product/manage';
-import { ProductResponseDto, CreateProductDto, UpdateProductDto } from '@/pages/product/manage/types';
+import { ProductResponseDto } from '@/pages/product/manage/types';
+import {
+  deleteProduct,
+  getProductList,
+  togglePublishStatus,
+} from '@/services/product/manage';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { history } from 'umi';
-import {
-  Button,
-  message,
-  Switch,
-} from 'antd';
+import { Button, message, Switch } from 'antd';
 import { useRef } from 'react';
+import { history } from 'umi';
 
 const ProductManagement = () => {
   const actionRef = useRef<ActionType>();
@@ -70,7 +70,9 @@ const ProductManagement = () => {
           checked={record.publishStatus === 1}
           checkedChildren="上架"
           unCheckedChildren="下架"
-          onChange={(checked) => handleTogglePublishStatus(record.id, checked ? 1 : 0)}
+          onChange={(checked) =>
+            handleTogglePublishStatus(record.id, checked ? 1 : 0)
+          }
         />
       ),
     },
@@ -118,25 +120,33 @@ const ProductManagement = () => {
       title: '操作',
       valueType: 'option',
       key: 'option',
-      render: (text, record, _, action) => [
-        <a
-          key="editable"
-          onClick={() => {
-            handleEdit(record);
-          }}
-        >
-          编辑
-        </a>,
-        <a
-          key="delete"
-          onClick={async () => {
-            await handleDelete(record.id);
-            action?.reload();
-          }}
-        >
-          删除
-        </a>,
-      ],
+      render: (text, record, _, action) => {
+        const options = [];
+        if (record.publishStatus === 0) {
+          options.push(
+            <a
+              key="editable"
+              onClick={() => {
+                handleEdit(record);
+              }}
+            >
+              编辑
+            </a>,
+          );
+        }
+        options.push(
+          <a
+            key="delete"
+            onClick={async () => {
+              await handleDelete(record.id);
+              action?.reload();
+            }}
+          >
+            删除
+          </a>,
+        );
+        return options;
+      },
     },
   ];
 
@@ -201,7 +211,7 @@ const ProductManagement = () => {
             option: { fixed: 'right', disable: true },
           },
           onChange(value) {
-            console.log('value: ', value);
+            // console.log('value: ', value);
           },
         }}
         rowKey="id"

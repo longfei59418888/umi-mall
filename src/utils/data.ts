@@ -44,3 +44,20 @@ export const FormatExpandedData = <T extends { parentId: string; id: string }>(
       };
     });
 };
+
+export function cartesianProduct(specs: string[][]): string[][] {
+  if (specs.length === 0) return [];
+
+  return specs.reduce<string[][]>(
+    (acc, cur) => {
+      const result: string[][] = [];
+      for (const a of acc) {
+        for (const b of cur) {
+          result.push([...a, b]);
+        }
+      }
+      return result;
+    },
+    [[]],
+  );
+}

@@ -52,6 +52,7 @@ declare namespace API {
     pageSize?: number;
     /** 分类名称 */
     name?: string;
+    parentId: string;
     /** 显示状态：0->不显示；1->显示 */
     showStatus?: number;
   };
@@ -927,6 +928,22 @@ declare namespace API {
     description?: string;
     /** 后台用户数量 */
     adminCount?: number;
+  };
+
+  type UploadSignatureResponseDataDto = {
+    /** Policy */
+    policy: string;
+    /** OSS4-HMAC-SHA256 */
+    xOssSignatureVersion: string;
+    xOssCredential: string;
+    xOssDate: string;
+    securityToken: string;
+    /** Signature */
+    signature: string;
+    /** Host */
+    host: string;
+    /** Directory */
+    dir: string;
   };
 
   type UserControllerFindAllParams = {

@@ -1,7 +1,5 @@
 import AttributeTreeSelect from '@/components/AttributeTreeSelect'; // 引入新的树形选择器组件
 import CategoryTreeSelect from '@/components/CategoryTreeSelect'; // 引入新的商品分类树形选择器组件
-import { getAllAttributeList } from '@/services/product/attribute';
-import { AttributeResponseDto } from '@/services/product/attribute/type';
 import {
   createCategory,
   deleteCategory,
@@ -30,7 +28,7 @@ import {
   Select,
   Switch,
 } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const { TextArea } = Input;
 
@@ -43,23 +41,23 @@ const CategoryManagement = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentRecord, setCurrentRecord] =
     useState<CategoryResponseDto | null>(null);
-  const [attributeOptions, setAttributeOptions] = useState<
-    { label: string; value: string }[]
-  >([]);
+  // const [attributeOptions, setAttributeOptions] = useState<
+  //   { label: string; value: string }[]
+  // >([]);
 
-  // 获取所有商品属性选项
-  const fetchAttributeOptions = async () => {
-    try {
-      const res = await getAllAttributeList();
-      const options = res.data.map((item: AttributeResponseDto) => ({
-        label: item.name,
-        value: item.id.toString(),
-      }));
-      setAttributeOptions(options);
-    } catch (error) {
-      console.error('获取商品属性失败:', error);
-    }
-  };
+  // // 获取所有商品属性选项
+  // const fetchAttributeOptions = async () => {
+  //   try {
+  //     const res = await getAllAttributeList();
+  //     const options = res.data.map((item: AttributeResponseDto) => ({
+  //       label: item.name,
+  //       value: item.id.toString(),
+  //     }));
+  //     setAttributeOptions(options);
+  //   } catch (error) {
+  //     console.error('获取商品属性失败:', error);
+  //   }
+  // };
 
   // 表格列定义
   const columns: ProColumns<CategoryResponseDto>[] = [
@@ -227,9 +225,9 @@ const CategoryManagement = () => {
   };
 
   // 初始化时获取属性选项
-  useEffect(() => {
-    void fetchAttributeOptions();
-  }, []);
+  // useEffect(() => {
+  //   void fetchAttributeOptions();
+  // }, []);
 
   return (
     <>
@@ -243,7 +241,7 @@ const CategoryManagement = () => {
             pageSize: params.pageSize,
           });
           return {
-            data: FormatExpandedData(parentId, res.data.records),
+            data: FormatExpandedData(parentId ?? '', res.data.records),
             success: true,
             total: res.data.total,
           };

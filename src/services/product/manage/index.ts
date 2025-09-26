@@ -1,21 +1,22 @@
-import { request } from 'umi';
 import {
-  ProductResponseDto,
   CreateProductDto,
-  UpdateProductDto,
   ProductListParams,
   ProductPageResult,
+  ProductResponseDto,
+  UpdateProductDto,
 } from '@/pages/product/manage/types';
 import { ApiResponse } from '@/services/index';
+import { request } from 'umi';
 
 // 获取商品列表
 export async function getProductList(params: ProductListParams) {
-  return request<
-    ApiResponse<ProductPageResult>
-  >('/api/admin/product/manage/list', {
-    method: 'GET',
-    params,
-  });
+  return request<ApiResponse<ProductPageResult>>(
+    '/api/admin/product/manage/list',
+    {
+      method: 'GET',
+      params,
+    },
+  );
 }
 
 // 创建商品
@@ -44,16 +45,16 @@ export async function updateProduct(data: UpdateProductDto) {
 export async function deleteProduct(id: string) {
   return request<ApiResponse<any>>('/api/admin/product/manage/delete', {
     method: 'POST',
-    params: { id },
+    data: { id },
   });
 }
 
 // 获取商品详情
 export async function getProductDetail(id: string) {
-  return request<ApiResponse<ProductResponseDto>>(
+  return request<ApiResponse<UpdateProductDto>>(
     '/api/admin/product/manage/detail',
     {
-      method: 'POST',
+      method: 'GET',
       params: { id },
     },
   );
@@ -65,7 +66,7 @@ export async function togglePublishStatus(id: string, status: number) {
     '/api/admin/product/manage/update-publish-status',
     {
       method: 'POST',
-      params: { id, status },
+      data: { id, publishStatus: status },
     },
   );
 }

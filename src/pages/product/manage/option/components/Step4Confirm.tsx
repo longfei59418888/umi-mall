@@ -1,61 +1,109 @@
-import React from 'react';
-import { Descriptions, Card, Row, Col, Table, Image, Tag } from 'antd';
-import type { StepFormData } from '../types';
+import { ProFormInstance } from '@ant-design/pro-form/lib';
+import { Card, Col, Descriptions, Row, Table, Tag } from 'antd';
+import { FC, MutableRefObject, useEffect, useState } from 'react';
+import type {
+  AttributeCategoryOption,
+  BrandOption,
+  StepFormData,
+} from '../types';
 
-interface Step4ConfirmProps {
-  formData: StepFormData;
-}
-
-const Step4Confirm: React.FC<Step4ConfirmProps> = ({ formData }) => {
+const Step4Confirm: FC<{
+  current: number;
+  formMapRef: any;
+  brandOptions: BrandOption[];
+  attributeCategoryOptions: AttributeCategoryOption[];
+}> = ({ formMapRef, brandOptions, attributeCategoryOptions, current }) => {
+  const [formData, setFormData] = useState<StepFormData>();
+  useEffect(() => {
+    setTimeout(
+      () =>
+        setFormData(
+          formMapRef.current?.reduce(
+            (
+              prev: object,
+              current: MutableRefObject<
+                ProFormInstance<StepFormData> | undefined
+              >,
+            ) => {
+              const values = current.current?.getFieldsValue();
+              return {
+                ...prev,
+                ...values,
+              };
+            },
+            {},
+          ),
+        ),
+      0,
+    );
+  }, [current]);
   // 商品基本信息
   const basicInfoItems = [
-    { label: '商品名称', value: formData.name },
-    { label: '副标题', value: formData.subTitle },
-    { label: '商品品牌', value: formData.brandName },
-    { label: '商品分类', value: formData.productCategoryName },
-    { label: '商品属性分类', value: formData.productAttributeCategoryName },
-    { label: '商品单位', value: formData.unit },
-    { label: '商品重量', value: formData.weight },
-    { label: '排序', value: formData.sort },
-  ];
-
-  // 商品状态信息
-  const statusItems = [
-    { 
-      label: '上架状态', 
-      value: formData.publishStatus === 1 ? <Tag color="green">上架</Tag> : <Tag color="red">下架</Tag> 
-    },
-    { 
-      label: '新品状态', 
-      value: formData.newStatus === 1 ? <Tag color="blue">新品</Tag> : <Tag color="default">非新品</Tag> 
-    },
-    { 
-      label: '推荐状态', 
-      value: formData.recommandStatus === 1 ? <Tag color="purple">推荐</Tag> : <Tag color="default">不推荐</Tag> 
-    },
-    { 
-      label: '预告商品', 
-      value: formData.previewStatus === 1 ? <Tag color="orange">预告商品</Tag> : <Tag color="default">非预告商品</Tag> 
-    },
-  ];
-
-  // 商品价格库存信息
-  const priceStockItems = [
-    { label: '价格', value: `¥${formData.price}` },
-    { label: '市场价', value: `¥${formData.originalPrice}` },
-    { label: '促销价格', value: `¥${formData.promotionPrice}` },
-    { label: '库存', value: formData.stock },
-    { label: '库存预警值', value: formData.lowStock },
-    { label: '销量', value: formData.sale },
-  ];
-
-  // 商品SKU列表列定义
-  const skuColumns = [
+    { label: '商品名称', value: formData?.name },
+    { label: '副标题', value: formData?.subTitle },
     {
-      title: 'SKU编码',
-      dataIndex: 'skuCode',
-      key: 'skuCode',
+      label: '商品品牌',
+      value: brandOptions.find((item) => item.id === formData?.brandId)?.name,
     },
+    { label: '商品分类', value: formData?.productCategoryName },
+    {
+      label: '商品属性分类',
+      value: attributeCategoryOptions.find(
+        (item) => item.id === formData?.productAttributeCategoryId,
+      )?.name,
+    },
+    { label: '商品单位', value: formData?.unit },
+    { label: '商品重量', value: formData?.weight },
+    { label: '排序', value: formData?.sort },
+  ];
+  //
+  // // 商品状态信息
+  const statusItems = [
+    {
+      label: '新品状态',
+      value:
+        formData?.newStatus === 1 ? (
+          <Tag color="blue">新品</Tag>
+        ) : (
+          <Tag color="default">非新品</Tag>
+        ),
+    },
+    {
+      label: '推荐状态',
+      value:
+        formData?.recommandStatus === 1 ? (
+          <Tag color="purple">推荐</Tag>
+        ) : (
+          <Tag color="default">不推荐</Tag>
+        ),
+    },
+    {
+      label: '预告商品',
+      value:
+        formData?.previewStatus === 1 ? (
+          <Tag color="orange">预告商品</Tag>
+        ) : (
+          <Tag color="default">非预告商品</Tag>
+        ),
+    },
+  ];
+  //
+  // // 商品价格库存信息
+  const priceStockItems = [
+    { label: '价格', value: `¥${formData?.originalPrice}` },
+    { label: '市场价', value: `¥${formData?.originalPrice}` },
+    { label: '促销价格', value: `¥${formData?.promotionPrice}` },
+    { label: '库存', value: formData?.stock },
+    { label: '库存预警值', value: formData?.lowStock },
+  ];
+  //
+  // // 商品SKU列表列定义
+  const skuColumns = [
+    // {
+    //   title: 'SKU编码',
+    //   dataIndex: 'skuCode',
+    //   key: 'skuCode',
+    // },
     {
       title: '价格',
       dataIndex: 'price',
@@ -66,6 +114,11 @@ const Step4Confirm: React.FC<Step4ConfirmProps> = ({ formData }) => {
       title: '库存',
       dataIndex: 'stock',
       key: 'stock',
+    },
+    {
+      title: '库存预警值',
+      dataIndex: 'lowStock',
+      key: 'lowStock',
     },
     {
       title: '规格值1',
@@ -83,8 +136,8 @@ const Step4Confirm: React.FC<Step4ConfirmProps> = ({ formData }) => {
       key: 'sp3',
     },
   ];
-
-  // 阶梯价格列表列定义
+  //
+  // // 阶梯价格列表列定义
   const ladderColumns = [
     {
       title: '满足商品数量',
@@ -103,8 +156,8 @@ const Step4Confirm: React.FC<Step4ConfirmProps> = ({ formData }) => {
       render: (text: string) => `¥${text}`,
     },
   ];
-
-  // 满减价格列表列定义
+  //
+  // // 满减价格列表列定义
   const fullReductionColumns = [
     {
       title: '满多少金额',
@@ -120,13 +173,32 @@ const Step4Confirm: React.FC<Step4ConfirmProps> = ({ formData }) => {
     },
   ];
 
+  const memberPriceColumns = [
+    {
+      title: '会员等级ID',
+      dataIndex: 'memberLevelId',
+      key: 'memberLevelId',
+    },
+    {
+      title: '会员价格',
+      dataIndex: 'memberPrice',
+      key: 'memberPrice',
+      render: (text: string) => `¥${text}`,
+    },
+    {
+      title: '会员等级名称',
+      dataIndex: 'memberLevelName',
+      key: 'memberLevelName',
+    },
+  ];
+
   return (
-    <div className="space-y-6">
-      {/* 商品基本信息 */}
-      <Card title="商品基本信息" bordered={false}>
+    <div className="space-y-6 pb-5">
+      商品基本信息
+      <Card title="商品基本信息">
         <Row gutter={16}>
           <Col span={12}>
-            <Descriptions column={1} bordered>
+            <Descriptions column={1}>
               {basicInfoItems.map((item, index) => (
                 <Descriptions.Item key={index} label={item.label}>
                   {item.value || '-'}
@@ -135,7 +207,7 @@ const Step4Confirm: React.FC<Step4ConfirmProps> = ({ formData }) => {
             </Descriptions>
           </Col>
           <Col span={12}>
-            <Descriptions column={1} bordered>
+            <Descriptions column={1}>
               {statusItems.map((item, index) => (
                 <Descriptions.Item key={index} label={item.label}>
                   {item.value || '-'}
@@ -145,20 +217,9 @@ const Step4Confirm: React.FC<Step4ConfirmProps> = ({ formData }) => {
           </Col>
         </Row>
       </Card>
-
-      {/* 商品图片 */}
-      <Card title="商品图片" bordered={false}>
-        <div className="flex flex-wrap gap-4">
-          {formData.pic && <Image width={200} src={formData.pic} />}
-          {formData.albumPics?.split(',').map((pic, index) => (
-            <Image key={index} width={200} src={pic} />
-          ))}
-        </div>
-      </Card>
-
-      {/* 价格库存信息 */}
-      <Card title="价格库存信息" bordered={false}>
-        <Descriptions column={2} bordered>
+      {/*/!* 价格库存信息 *!/*/}
+      <Card title="价格库存信息">
+        <Descriptions column={2}>
           {priceStockItems.map((item, index) => (
             <Descriptions.Item key={index} label={item.label}>
               {item.value || '-'}
@@ -166,45 +227,59 @@ const Step4Confirm: React.FC<Step4ConfirmProps> = ({ formData }) => {
           ))}
         </Descriptions>
       </Card>
-
-      {/* SKU列表 */}
-      <Card title="SKU列表" bordered={false}>
-        <Table 
-          dataSource={formData.skuStockList || []} 
-          columns={skuColumns} 
-          pagination={false} 
-          rowKey="skuCode" 
+      {/*/!* 商品图片 *!/*/}
+      <Card title="商品图片">
+        <div className="flex flex-wrap gap-4">
+          {formData?.pic && <img alt={''} width={200} src={formData.pic} />}
+          {formData?.pics?.map((pic, index) => (
+            <img alt={''} key={index} width={200} src={pic} />
+          ))}
+        </div>
+      </Card>
+      {/*/!* SKU列表 *!/*/}
+      <Card title="SKU列表">
+        <Table
+          dataSource={formData?.skuStockList || []}
+          columns={skuColumns}
+          pagination={false}
+          rowKey="sp1"
         />
       </Card>
-
-      {/* 阶梯价格 */}
-      <Card title="阶梯价格" bordered={false}>
-        <Table 
-          dataSource={formData.productLadderList || []} 
-          columns={ladderColumns} 
-          pagination={false} 
-          rowKey={(_, index) => `ladder-${index}`} 
+      {/*/!* 阶梯价格 *!/*/}
+      <Card title="阶梯价格">
+        <Table
+          dataSource={formData?.productLadderList || []}
+          columns={ladderColumns}
+          pagination={false}
+          rowKey={'count'}
         />
       </Card>
-
-      {/* 满减价格 */}
-      <Card title="满减价格" bordered={false}>
-        <Table 
-          dataSource={formData.productFullReductionList || []} 
-          columns={fullReductionColumns} 
-          pagination={false} 
-          rowKey={(_, index) => `fullReduction-${index}`} 
+      {/*/!* 满减价格 *!/*/}
+      <Card title="满减价格">
+        <Table
+          dataSource={formData?.productFullReductionList || []}
+          columns={fullReductionColumns}
+          pagination={false}
+          rowKey={'fullPrice'}
         />
       </Card>
-
-      {/* 商品描述 */}
-      <Card title="商品描述" bordered={false}>
-        <div dangerouslySetInnerHTML={{ __html: formData.description || '' }} />
+      <Card title="满减价格">
+        <Table
+          dataSource={formData?.memberPriceList || []}
+          columns={memberPriceColumns}
+          pagination={false}
+          rowKey={'memberLevelId'}
+        />
       </Card>
-
+      {/*/!* 商品描述 *!/*/}
+      <Card title="商品描述">
+        <div
+          dangerouslySetInnerHTML={{ __html: formData?.description || '' }}
+        />
+      </Card>
       {/* 详情描述 */}
-      <Card title="详情描述" bordered={false}>
-        <div dangerouslySetInnerHTML={{ __html: formData.detailDesc || '' }} />
+      <Card title="详情描述">
+        <div dangerouslySetInnerHTML={{ __html: formData?.detailDesc || '' }} />
       </Card>
     </div>
   );

@@ -195,7 +195,7 @@ export interface SkuStockDto {
   /** 库存预警值 */
   lowStock?: number;
   /** 规格值1 */
-  sp1?: string;
+  sp1: string;
   /** 规格值2 */
   sp2?: string;
   /** 规格值3 */
@@ -241,9 +241,10 @@ export interface MemberPriceDto {
 // 产品属性值类型
 export interface ProductAttributeValueDto {
   /** 会员等级ID */
-  productAttributeId?: string;
+  productAttributeId: string;
   /** 会员价格 */
   value?: string;
+  selectType?: 1 | 2;
 }
 
 // 商品列表查询参数

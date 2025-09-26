@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 interface CategoryTreeSelectProps {
   value?: string;
   onChange?: (value: string) => void;
+  onSelect?: (value: string, option: DataNode) => void;
   placeholder?: string;
   hasTop?: boolean;
 }
@@ -13,6 +14,7 @@ interface CategoryTreeSelectProps {
 const CategoryTreeSelect: React.FC<CategoryTreeSelectProps> = ({
   value,
   onChange,
+  onSelect,
   hasTop = true,
   placeholder = '请选择上级分类',
 }) => {
@@ -84,6 +86,7 @@ const CategoryTreeSelect: React.FC<CategoryTreeSelectProps> = ({
       treeData={treeData}
       value={value}
       onChange={onChange}
+      onSelect={onSelect}
       placeholder={placeholder}
       treeDefaultExpandAll
       loading={loading}

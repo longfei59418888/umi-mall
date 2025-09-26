@@ -1,3 +1,8 @@
+
+/*
+* @see https://umijs.org/docs/max/layout-menu
+* */
+
 export default {
   title: 'Test-Mall',
   logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',

@@ -18,6 +18,9 @@ export const getMenuPath = (
   return paths;
 };
 
+/**
+ * @see https://umijs.org/docs/max/access#access
+ * */
 export default (initialState: { userinfo: UserInfo }) => {
   const { permissions = [], menus = [] } = initialState.userinfo || {};
   return {
